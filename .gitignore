@@ -1,0 +1,15 @@
+# Veri dosyaları
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# Veritabanı dosyaları (kod SQL'e yazar ama binary db git'e girmez)
+*.db
+*.sqlite3
+
+# Sistem ve Python önbellekleri
+__pycache__/
+*.pyc
+.DS_Store
+.Rhistory

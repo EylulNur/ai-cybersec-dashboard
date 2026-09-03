@@ -1,0 +1,19 @@
+
+================================================================================
+          AI-POWERED CYBERSECURITY EXECUTIVE THREAT REPORT (EDA)
+================================================================================
+1. GENEL TRAFİK ÖZETİ:
+   - Toplam İncelenen Akış (Flow): 225,711
+   - Güvenli Trafik (BENIGN): 97,686 (%43.3)
+   - Tespit Edilen DDoS Saldırısı: 128,025 (%56.7)
+
+2. ANOMALİ TESPİT BULGULARI:
+   - Paket Boyutu Anomalisi: DDoS saldırısı altındaki ortalama paket boyutu (736.89 bayt), 
+     normal trafik taban çizgisine (224.37 bayt) kıyasla %228.4 DAHA BÜYÜKTÜR.
+   - Akış Süresi (Duration): DDoS akışları normal trafiğe göre ortalama %10.7 daha uzun sürmüştür.
+   
+3. YAPAY ZEKA DESTEKLİ TEHDİT DEĞERLENDİRMESİ:
+   - Trafik paterni, bant genişliğini tüketmeye yönelik Volumetrik DDoS saldırı profiliyle örtüşmektedir.
+   - Hedef portlar ve ileri yönlü paket sayıları taban çizgisini aştığından, ağ seviyesinde hız sınırlama (rate limiting)
+     ve anomali tabanlı IPS kuralları derhal devreye alınmalıdır.
+================================================================================
