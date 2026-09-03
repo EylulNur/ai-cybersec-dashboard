@@ -23,7 +23,7 @@ ai-cybersec-dashboard/
 │   ├── raw/                # Ham CIC-IDS verisi (.gitignore'da)
 │   └── processed/          # Temizlenmiş 225k satır: ddos_cleaned.csv
 ├── docs/
-│   ├── responsible_ai.md   # Güvenlik etiği notları
+│   ├── responsible_ai.md   # Güvenlik etiği notları (yakında eklenecek — Modül 5 sonrası)
 │   └── threat_summary.txt  # Üretilen tehdit özeti
 ├── sql/
 │   ├── cybersecurity.db    # Yerel SQLite veritabanı
@@ -42,6 +42,9 @@ ai-cybersec-dashboard/
 * Büyük CSV dosyalarını ve yerel SQLite veritabanını repoya alıp şişirmemek adına `.gitignore` ve `.gitkeep` mantığını dikkatle kurdum; repoda sadece pipeline kodlarını ve dokümanları tutuyorum.
 * Terminal ortamında çalışırken kimlik doğrulama (Personal Access Token) ve remote dal yapılandırması gibi Git pratiklerini bizzat deneyimledim.
 * Sırada bu temiz veri tabanını Power BI'a bağlayıp SOC ekipleri için anomali odaklı bir gösterge paneli (dashboard) tasarlamak var.
+
+> **Not:** Ham veri (`CIC-IDS-2017` - Friday Working Hours Afternoon DDoS) boyut nedeniyle repoya dahil edilmemiştir. 
+> [Resmi kaynaktan](https://www.unb.ca/cic/datasets/ids-2017.html) indirip `data/raw/` klasörüne yerleştirmen gerekiyor.
 
 ### Nasıl Çalıştırılır?
 
