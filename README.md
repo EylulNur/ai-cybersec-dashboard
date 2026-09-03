@@ -1,69 +1,53 @@
-# 🛡️ AI-Powered Cybersecurity Traffic Analytics Pipeline
+# ai-cybersec-dashboard
 
-> 🚧 **Aktif geliştirme aşamasında.** Şu an Modül 1 (veri temizleme + SQLite + EDA) tamamlandı, Modül 2 (Power BI dashboard) üzerinde çalışılıyor.
+Bu projeyi CIC-IDS-2017 veri setiyle, siber güvenlik operasyonlarında veri analitiğinin uçtan uca nasıl çalıştığını görmek için yaptım. Ham ağ trafiğinden başlayıp veri tabanına, oradan da SOC analistlerinin işine yarayacak anlamlı metriklere ulaşan bir hat kurmak istedim.
 
-Bu proje, CIC-IDS-2017 ağ trafiği veri kümesindeki DDoS anomalilerini tespit etmek için geliştirdiğim bir analitik hat. Ham veriyi temizliyor, SQLite veritabanına yüklüyor, ardından trafik davranışını normal ve saldırı akışları arasında karşılaştıran otomatik bir tehdit raporu üretiyor.
+### Neler Buldum?
 
-## 🔍 Öne Çıkan Bulgular
+* **Paket Boyutu Sıçraması:** DDoS saldırılarında ortalama paket boyutu 736.89 bayta fırlarken, normal taban çizgisi 224.37 bayt seviyesinde. Yaklaşık %228.4'lük bir hacim artışı var.
+* **Oturum Süresi:** Saldırı akışları normal oturumlara kıyasla ortalama %10.7 daha uzun sürüyor.
+* **Hacim:** 225.711 satırlık temizlenmiş akışın yaklaşık 128 bini DDoS, 97 bini normal trafik.
 
-| Metrik | Normal (BENIGN) | DDoS | Fark |
-|---|---|---|---|
-| Ortalama paket boyutu | 224.37 bayt | 736.89 bayt | ~%228 daha büyük |
-| Ortalama akış süresi | — | — | ~%11 daha uzun |
-| Akış sayısı | 97.686 (%43.3) | 128.025 (%56.7) | toplam 225.711 akış |
+### Kullandığım Araçlar
 
-Bu tablo, `sql/schema.sql` içindeki sorgularla üretilen özet istatistiklere dayanıyor.
+* Python (pandas, numpy, sqlite3)
+* SQL / SQLite
+* Git & GitHub
+* Power BI (Modül 2'de görselleştirme ve DAX metrikleri için bağlayacağım)
 
-## 🛠 Kullanılan Teknolojiler
+### Proje Yapısı
 
-* **Python 3** — Pandas, NumPy
-* **SQLite3 / SQL** — veri katmanı
-* **Power BI** — görselleştirme (Modül 2, devam ediyor)
-* **Git & GitHub** — sürüm kontrolü
-
-## 🚀 Nasıl Çalıştırılır
-
-```bash
-# 1. Repoyu klonla
-git clone https://github.com/EylulNur/ai-cybersec-dashboard.git
-cd ai-cybersec-dashboard
-
-# 2. Gerekli kütüphaneleri kur
-pip install -r requirements.txt
-
-# 3. Veriyi temizle
-python src/data_cleaning.py
-
-# 4. SQLite'a yükle
-python src/load_to_sql.py
-
-# 5. Otomatik tehdit raporu üret
-python src/ai_narrative.py
-```
-
-Ham veri (`data/raw/`) büyük olduğu için repoya dahil edilmedi — CIC-IDS-2017 veri setini [buradan](https://www.unb.ca/cic/datasets/ids-2017.html) indirip `data/raw/` klasörüne koymanız gerekiyor.
-
-## 📂 Klasör Yapısı
-
-```
+```text
 ai-cybersec-dashboard/
 ├── data/
-│   ├── raw/                # Ham CIC-IDS-2017 verisi (.gitignore ile korunur)
-│   └── processed/          # Temizlenmiş 225k satırlık ddos_cleaned.csv
+│   ├── raw/                # Ham CIC-IDS verisi (.gitignore'da)
+│   └── processed/          # Temizlenmiş 225k satır: ddos_cleaned.csv
 ├── docs/
-│   ├── responsible_ai.md   # Güvenlik etiği ve sorumlu yapay zeka notları
-│   └── threat_summary.txt  # Üretilen otomatik tehdit analiz raporu
+│   ├── responsible_ai.md   # Güvenlik etiği notları
+│   └── threat_summary.txt  # Üretilen tehdit özeti
 ├── sql/
-│   ├── cybersecurity.db    # Yerel SQLite veritabanı (binary, git-ignored)
-│   └── schema.sql          # Tablo tanımları ve analitik sorgular
+│   ├── cybersecurity.db    # Yerel SQLite veritabanı
+│   └── schema.sql          # Tablo şeması ve sorgular
 ├── src/
-│   ├── data_cleaning.py    # NaN/Inf temizleme ve şema standartlaştırma
-│   ├── load_to_sql.py      # SQLite aktarım ve metrik sorgulama hattı
-│   └── ai_narrative.py     # Metriklerden anomali raporu üreten anlatım motoru
+│   ├── data_cleaning.py    # NaN / Inf temizliği ve sütun düzeni
+│   ├── load_to_sql.py      # SQLite aktarım hattı
+│   └── ai_narrative.py     # İstatistiğe dayalı özet üreten script
 ├── requirements.txt
 └── README.md
 ```
 
-## 📝 Notlar
+### Karşılaştığım Zorluklar ve Notlar
 
-Bu proje bir öğrenme/portföy çalışması olarak geliştiriliyor. Şu an kural/istatistik tabanlı bir anomali analizi yapıyor; ileride bir sınıflandırma modeli (örn. Random Forest) eklemeyi planlıyorum. Geri bildirim ve katkılara açığım.
+* Ham veri setindeki `Infinity` ve kayıp (`NaN`) değerler veritabanına aktarılırken sürekli tip hatalarına yol açtı; temizleme betiğinde bunları özel olarak filtreleyip sayısal tipleri sabitlemem gerekti.
+* Büyük CSV dosyalarını ve yerel SQLite veritabanını repoya alıp şişirmemek adına `.gitignore` ve `.gitkeep` mantığını dikkatle kurdum; repoda sadece pipeline kodlarını ve dokümanları tutuyorum.
+* Terminal ortamında çalışırken kimlik doğrulama (Personal Access Token) ve remote dal yapılandırması gibi Git pratiklerini bizzat deneyimledim.
+* Sırada bu temiz veri tabanını Power BI'a bağlayıp SOC ekipleri için anomali odaklı bir gösterge paneli (dashboard) tasarlamak var.
+
+### Nasıl Çalıştırılır?
+
+```bash
+pip install -r requirements.txt
+python3 src/data_cleaning.py
+python3 src/load_to_sql.py
+python3 src/ai_narrative.py
+```
