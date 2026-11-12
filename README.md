@@ -1,28 +1,41 @@
 # SOC Threat Intelligence & Network Traffic Analysis
 
-I built this project to analyze network flow anomalies and differentiate DDoS attack patterns from legitimate traffic using the **CICIDS2017** dataset. It combines a local SQLite database, Python for anomaly visualization, and custom DAX measures designed for SOC monitoring dashboards.
+This project focuses on analyzing network traffic and identifying differences between legitimate traffic and DDoS attack traffic using the **CICIDS2017** dataset.
 
-## Why This Project?
-While studying cybersecurity analytics and threat monitoring, I wanted a hands-on project that moves beyond basic CSV filtering. The goal was simple: take raw packet-level connection logs, structure them efficiently in SQL, and identify the exact metrics (like packet size drops and flow duration spikes) that trigger DDoS alarms in a SOC environment.
+I built it as a hands-on cybersecurity analytics project to practice working with network flow data, SQL, Python, and Power BI-style SOC metrics.
 
-## Key Findings & Telemetry
-Here is the baseline comparison generated directly from the local SQLite database:
+## Project Overview
+The project takes network flow records, stores the cleaned data in a local SQLite database, and uses Python to analyze traffic patterns.
 
-<img src="reports/figures/soc_traffic_overview.png" alt="SOC Telemetry Overview" width="850" />
+The main focus is on metrics such as:
+* Packet size
+* Flow duration
+* Traffic volume
+* Connection frequency
+* Differences between normal and attack traffic
 
-* **Packet Size Anomaly:** Legitimate traffic averages significantly larger payloads, whereas DDoS attacks rely on rapid, small-sized packet flooding to exhaust server resources.
-* **Volume Distribution:** Attack traffic creates an overwhelming proportion of short-lived, high-frequency connection flows.
+The purpose is to see how these metrics can be used to support DDoS detection in a SOC environment.
 
-## How It Works
-* **Database (`sql/`):** Raw logs are cleaned and ingested into SQLite (`cybersecurity.db`) to simulate connection log indexing.
-* **Analysis (`src/visualize.py`):** Queries flow records with Pandas, calculates volume distribution, and plots packet metrics with Seaborn.
-* **Power BI & DAX Ready (`docs/`):** Documented analytical DAX formulas (attack ratios, discrepancy indexing) to model these metrics for real-time dashboard reporting.
+## Key Findings
+The analysis showed noticeable differences between legitimate and attack traffic:
 
-## How to Run
-```bash
-# Clone the repository
-git clone [https://github.com/EylulNur/ai-cybersec-dashboard.git](https://github.com/EylulNur/ai-cybersec-dashboard.git)
-cd ai-cybersec-dashboard
+<img src="reports/figures/soc_traffic_overview.png" alt="SOC Traffic Overview" width="850" />
 
-# Run the visualization pipeline
-python3 src/visualize.py
+* **Packet Size:** Legitimate traffic generally had larger packet sizes, while DDoS traffic contained a much higher number of smaller and short-lived flows.
+* **Traffic Volume:** Attack traffic produced a large number of connections within a relatively short period. This creates a clear difference in traffic distribution compared with normal network activity.
+
+These differences can be useful as indicators when building SOC monitoring and alerting dashboards.
+
+## Project Structure
+```text
+ai-cybersec-dashboard/
+├── docs/
+│   └── data_modeling_dax.md
+├── reports/
+│   └── figures/soc_traffic_overview.png
+├── sql/
+│   ├── cybersecurity.db
+│   └── threat_hunting_queries.sql
+├── src/
+│   └── visualize.py
+└── README.mds
