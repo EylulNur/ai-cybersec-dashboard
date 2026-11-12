@@ -21,8 +21,13 @@ Here is the baseline comparison generated directly from the local SQLite databas
 ## How to Run
 ```bash
 # Clone the repository
-git clone [https://github.com/EylulNur/ai-cybersec-dashboard.git](https://github.com/EylulNur/ai-cybersec-dashboard.git)
+git clone https://github.com/EylulNur/ai-cybersec-dashboard.git
 cd ai-cybersec-dashboard
+
+# Install dependencies
+pip install pandas matplotlib seaborn
 
 # Run the visualization pipeline
 python3 src/visualize.py
+```
+The chart is saved to `reports/figures/soc_traffic_overview.png`.
